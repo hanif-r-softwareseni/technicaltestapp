@@ -2,16 +2,16 @@ import { ReapitConnectSession } from '@reapit/connect-session'
 import { PropertyModelPagedResult } from '@reapit/foundations-ts-definitions'
 import { URLS, BASE_HEADERS } from '../constants/api'
 
-interface QueryParams {
+type QueryParams = {
   marketingMode?: "selling" | "letting" | "sellingAndLetting"
 }
 export const propertiesApiService = async (
   session: ReapitConnectSession,
-  queryParams: QueryParams,
+  queryParams?: QueryParams,
 ): Promise<PropertyModelPagedResult | undefined> => {
   try {
     const url = new URL(`${window.reapit.config.platformApiUrl}${URLS.PROPERTIES}`)
-    url.search =  new URLSearchParams(queryParams as Record<string, string>).toString()
+    url.search =  new URLSearchParams(queryParams).toString()
 
     const response = await fetch(url.toString(), {
       method: 'GET',
@@ -28,6 +28,6 @@ export const propertiesApiService = async (
 
     throw new Error('No response returned by API')
   } catch (err) {
-    console.error('Error fetching Configuration Appointment Types', err)
+    console.error('Error fetching Properties', err)
   }
 }
